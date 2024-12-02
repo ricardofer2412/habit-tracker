@@ -4,15 +4,13 @@ import { FiMenu, FiX } from "react-icons/fi";
 import { motion } from "framer-motion";
 
 const Navbar: React.FC = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
-    // Check device's preferred color scheme on initial load
+    // Apply dark mode based on user's preference on initial load
     const prefersDarkMode = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
-    setIsDarkMode(prefersDarkMode);
     if (prefersDarkMode) {
       document.documentElement.classList.add("dark");
     }
