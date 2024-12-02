@@ -1,14 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FiSun, FiMoon, FiMenu, FiX } from "react-icons/fi";
+import { motion } from "framer-motion";
 
 const Navbar: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  useEffect(() => {
+    // Check device's preferred color scheme on initial load
+    const prefersDarkMode = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+    setIsDarkMode(prefersDarkMode);
+    if (prefersDarkMode) {
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
+
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle("dark");
+    if (isDarkMode) {
+      document.documentElement.classList.remove("dark");
+    } else {
+      document.documentElement.classList.add("dark");
+    }
   };
 
   const toggleSidebar = () => {
@@ -21,17 +37,14 @@ const Navbar: React.FC = () => {
       <nav className="bg-blue-600 dark:bg-dark-card text-white dark:text-gray-200 shadow-md">
         <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
           {/* Logo */}
-          <Link
-            to="/dashboard"
-            className="text-2xl font-bold hover:text-blue-200"
-          >
-            Habit Tracker
+          <Link to="/" className="text-2xl font-bold hover:text-blue-200">
+            ChronosHabit
           </Link>
 
           {/* Links (Hidden on Mobile) */}
           <div className="hidden md:flex space-x-6 items-center">
             <Link
-              to="/dashboard"
+              to="/"
               className="text-lg hover:text-blue-200 dark:hover:text-gray-400"
             >
               Dashboard
@@ -44,47 +57,66 @@ const Navbar: React.FC = () => {
             </Link>
 
             {/* Dark Mode Toggle */}
-            <button
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               onClick={toggleDarkMode}
               className="text-2xl hover:text-gray-300 dark:hover:text-gray-500 transition"
               aria-label="Toggle Dark Mode"
             >
               {isDarkMode ? <FiSun /> : <FiMoon />}
-            </button>
+            </motion.button>
           </div>
 
           {/* Hamburger Icon (Visible on Mobile) */}
-          <button
+          <motion.button
+            whileHover={{ scale: 1.2 }}
             onClick={toggleSidebar}
             className="md:hidden text-2xl hover:text-gray-300 dark:hover:text-gray-500 transition"
             aria-label="Toggle Menu"
           >
             {isSidebarOpen ? <FiX /> : <FiMenu />}
-          </button>
+          </motion.button>
         </div>
       </nav>
 
       {/* Sidebar (Only Mobile) */}
-      {isSidebarOpen && (
-        <div className="fixed top-0 left-0 w-64 h-full bg-blue-600 dark:bg-dark-card text-white dark:text-gray-200 shadow-lg z-50 transition-transform transform md:hidden">
-          <div className="flex flex-col space-y-6 p-6">
-            {/* Close Button */}
-            <button
-              onClick={toggleSidebar}
-              className="self-end text-2xl hover:text-gray-300 dark:hover:text-gray-500 transition"
-              aria-label="Close Menu"
-            >
-              <FiX />
-            </button>
+      <motion.div
+        initial={{ x: "-100%" }}
+        animate={{ x: isSidebarOpen ? 0 : "-100%" }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="fixed top-0 left-0 w-64 h-full bg-blue-600 dark:bg-dark-card text-white dark:text-gray-200 shadow-lg z-50 transform md:hidden"
+      >
+        <div className="flex flex-col space-y-6 p-6">
+          {/* Close Button */}
+          <motion.button
+            whileHover={{ scale: 1.2 }}
+            onClick={toggleSidebar}
+            className="self-end text-2xl hover:text-gray-300 dark:hover:text-gray-500 transition"
+            aria-label="Close Menu"
+          >
+            <FiX />
+          </motion.button>
 
-            {/* Sidebar Links */}
+          {/* Sidebar Links */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
             <Link
-              to="/dashboard"
+              to="/"
               onClick={toggleSidebar}
               className="text-lg hover:text-blue-200 dark:hover:text-gray-400"
             >
               Dashboard
             </Link>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
             <Link
               to="/add-habit"
               onClick={toggleSidebar}
@@ -92,8 +124,14 @@ const Navbar: React.FC = () => {
             >
               Add Habit
             </Link>
+          </motion.div>
 
-            {/* Dark Mode Toggle */}
+          {/* Dark Mode Toggle */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
             <button
               onClick={toggleDarkMode}
               className="text-lg hover:text-gray-300 dark:hover:text-gray-500 transition flex items-center space-x-2"
@@ -111,9 +149,9 @@ const Navbar: React.FC = () => {
                 </>
               )}
             </button>
-          </div>
+          </motion.div>
         </div>
-      )}
+      </motion.div>
     </>
   );
 };

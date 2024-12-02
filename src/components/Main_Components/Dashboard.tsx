@@ -11,6 +11,7 @@ import {
   Legend,
 } from "chart.js";
 import { CiMenuKebab } from "react-icons/ci";
+import { motion } from "framer-motion";
 
 // Register Chart.js components
 ChartJS.register(
@@ -164,10 +165,20 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-100 dark:bg-dark-bg text-gray-800 dark:text-dark-text min-h-screen">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="bg-gray-100 dark:bg-dark-bg text-gray-800 dark:text-dark-text min-h-screen"
+    >
       <div className="max-w-6xl mx-auto px-6 py-10">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col md:flex-row justify-between items-center mb-8"
+        >
           <div className="space-y-2 text-center md:text-left">
             <h1 className="text-4xl font-bold">Your Habits</h1>
             <p className="text-gray-600 dark:text-gray-400">
@@ -176,15 +187,33 @@ const Dashboard: React.FC = () => {
           </div>
           <Link
             to="/add-habit"
-            className="bg-blue-600 dark:bg-dark-card text-white dark:text-gray-200 py-2 px-6 rounded-lg shadow hover:bg-blue-700 dark:hover:bg-gray-700 transition"
+            className="bg-blue-600 dark:bg-dark-card text-white dark:text-gray-200 py-2 px-6 mt-3 rounded-lg shadow hover:bg-blue-700 dark:hover:bg-gray-700 transition"
           >
             Add New Habit
           </Link>
-        </div>
+        </motion.div>
 
         {/* Summary Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white dark:bg-dark-card p-6 rounded-lg shadow-md flex items-center">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { staggerChildren: 0.2 },
+            },
+          }}
+        >
+          <motion.div
+            className="bg-white dark:bg-dark-card p-6 rounded-lg shadow-md flex items-center"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 },
+            }}
+          >
             <div className="w-12 h-12 flex items-center justify-center bg-blue-100 dark:bg-gray-700 text-blue-600 rounded-full mr-4">
               <i className="fas fa-list text-xl"></i>
             </div>
@@ -192,8 +221,14 @@ const Dashboard: React.FC = () => {
               <h2 className="text-lg font-semibold">Total Habits</h2>
               <p className="text-xl font-bold">{summary.total}</p>
             </div>
-          </div>
-          <div className="bg-white dark:bg-dark-card p-6 rounded-lg shadow-md flex items-center">
+          </motion.div>
+          <motion.div
+            className="bg-white dark:bg-dark-card p-6 rounded-lg shadow-md flex items-center"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 },
+            }}
+          >
             <div className="w-12 h-12 flex items-center justify-center bg-green-100 dark:bg-gray-700 text-green-600 rounded-full mr-4">
               <i className="fas fa-check text-xl"></i>
             </div>
@@ -201,20 +236,41 @@ const Dashboard: React.FC = () => {
               <h2 className="text-lg font-semibold">Completed Today</h2>
               <p className="text-xl font-bold">{summary.completedToday}</p>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Weekly Progress Chart */}
-        <div className="bg-white dark:bg-dark-card p-6 rounded-lg shadow-md mb-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="bg-white dark:bg-dark-card p-6 rounded-lg shadow-md mb-8"
+        >
           <Bar data={chartData} options={chartOptions} />
-        </div>
+        </motion.div>
 
         {/* Habit Cards Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { staggerChildren: 0.2 },
+            },
+          }}
+        >
           {habits.map((habit) => (
-            <div
+            <motion.div
               key={habit.id}
               className="bg-white dark:bg-dark-card p-6 rounded-lg shadow-md relative"
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 },
+              }}
             >
               <h2 className="text-xl font-semibold mb-2">{habit.name}</h2>
               <p className="text-gray-600 dark:text-gray-400">
@@ -226,14 +282,18 @@ const Dashboard: React.FC = () => {
                   onClick={() => toggleDropdown(habit.id)}
                 />
                 {dropdowns[habit.id] && (
-                  <div className="absolute right-0 mt-2 w-32 bg-white dark:bg-dark-card text-gray-800 dark:text-gray-200 rounded-lg shadow-md">
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="absolute right-0 mt-2 w-32 bg-white dark:bg-dark-card text-gray-800 dark:text-gray-200 rounded-lg shadow-md"
+                  >
                     <button
                       onClick={() => navigate(`/edit-habit/${habit.id}`)}
                       className="block px-4 py-2 text-left w-full hover:bg-gray-100 dark:hover:bg-gray-700 rounded-t-lg"
                     >
                       Manage
                     </button>
-                  </div>
+                  </motion.div>
                 )}
               </div>
               <div className="mt-4">
@@ -256,17 +316,21 @@ const Dashboard: React.FC = () => {
                     : "Mark as Completed"}
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {habits.length === 0 && (
-          <div className="text-center text-gray-500 mt-10">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center text-gray-500 mt-10"
+          >
             <p>No habits added yet. Click "Add New Habit" to get started!</p>
-          </div>
+          </motion.div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
