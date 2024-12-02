@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Habit {
   id: string;
@@ -13,6 +14,7 @@ const EditHabit: React.FC = () => {
   const navigate = useNavigate();
   const [habit, setHabit] = useState<Habit | null>(null);
   const [name, setName] = useState<string>("");
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     // Fetch habit details from localStorage
@@ -37,7 +39,13 @@ const EditHabit: React.FC = () => {
 
     // Save updated habits to localStorage
     localStorage.setItem("habits", JSON.stringify(updatedHabits));
-    navigate("/dashboard"); // Redirect back to the dashboard
+
+    // Show popup
+    setShowPopup(true);
+    setTimeout(() => {
+      setShowPopup(false);
+      navigate("/dashboard"); // Redirect back to the dashboard
+    }, 3000);
   };
 
   const handleDelete = () => {
@@ -53,62 +61,109 @@ const EditHabit: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-dark-bg text-gray-800 dark:text-dark-text">
-      <h1 className="text-3xl font-bold  p-4">Edit Habit</h1>
-      <div className="max-w-2xl mx-auto p-6 bg-white dark:bg-dark-card rounded-lg shadow-md pt-6 m-4">
+    <motion.div
+      className="min-h-screen bg-dark-bg text-dark-text flex items-center justify-center"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* Popup Notification */}
+      <AnimatePresence>
+        {showPopup && (
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-10 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg z-50"
+          >
+            🎉 Habit Updated Successfully!
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Edit Habit Form */}
+      <motion.div
+        className="w-full max-w-md bg-dark-card p-8 rounded-lg shadow-lg"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h1 className="text-3xl font-bold text-center mb-6">✏️ Edit Habit</h1>
         {habit ? (
           <>
-            <div className="mb-4 pt-2">
+            <div className="mb-4">
               <label
                 htmlFor="name"
-                className="block text-lg font-medium mb-2 text-gray-700 dark:text-gray-300"
+                className="block text-lg font-semibold mb-2 text-gray-300"
               >
-                Habit Name
+                Habit Name 📝
               </label>
               <input
                 id="name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg bg-gray-100 dark:bg-dark-bg text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full px-4 py-3 border border-gray-600 rounded-lg bg-dark-bg text-dark-text focus:ring-2 focus:ring-green-500 outline-none"
               />
             </div>
 
-            <div className="flex justify-between items-center mt-6">
+            <div className="flex justify-between items-center mb-6">
               {/* Save Button */}
-              <button
+              <motion.button
                 onClick={handleSave}
-                className="px-6 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+                className="px-6 py-3 bg-gradient-to-r from-green-500 to-purple-600 text-white font-semibold rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 hover:shadow-xl"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
               >
                 Save Changes
-              </button>
+              </motion.button>
 
               {/* Cancel Button */}
-              <button
+              <motion.button
                 onClick={() => navigate("/dashboard")}
-                className="px-6 py-2 rounded-lg bg-gray-400 text-white font-semibold hover:bg-gray-500 transition"
+                className="px-6 py-3 bg-gray-600 text-white font-semibold rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 hover:bg-gray-700"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
               >
                 Cancel
-              </button>
+              </motion.button>
             </div>
 
-            <hr className="my-6 border-gray-300 dark:border-gray-700" />
+            <motion.hr
+              className="border-gray-600 my-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            />
 
             {/* Delete Button */}
-            <div className="text-right">
+            <motion.div
+              className="text-right"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+            >
               <button
                 onClick={handleDelete}
-                className="px-6 py-2 rounded-lg bg-red-500 text-white font-semibold hover:bg-red-600 transition"
+                className="px-6 py-3 bg-red-500 text-white font-semibold rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 hover:bg-red-600"
               >
-                Delete Habit
+                Delete Habit 🗑️
               </button>
-            </div>
+            </motion.div>
           </>
         ) : (
-          <p className="text-center text-gray-500">Loading habit details...</p>
+          <motion.p
+            className="text-center text-gray-400"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            Loading habit details... ⏳
+          </motion.p>
         )}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

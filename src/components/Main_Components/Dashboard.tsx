@@ -130,7 +130,7 @@ const Dashboard: React.FC = () => {
   const datasets = Object.keys(weeklyData).map((habitName, index) => ({
     label: habitName,
     data: weeklyData[habitName],
-    backgroundColor: `hsl(${index * 60}, 70%, 60%)`,
+    backgroundColor: index % 2 === 0 ? "#9333ea" : "#22c55e", // Purple and Green
   }));
 
   const chartData = {
@@ -195,7 +195,7 @@ const Dashboard: React.FC = () => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3 }}
-            className="fixed top-10 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50"
+            className="fixed top-10 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50"
           >
             {dopamineMessage}
           </motion.div>
@@ -243,7 +243,7 @@ const Dashboard: React.FC = () => {
               visible: { opacity: 1, y: 0 },
             }}
           >
-            <div className="w-12 h-12 flex items-center justify-center bg-blue-700 rounded-full mr-4">
+            <div className="w-12 h-12 flex items-center justify-center bg-green-500 text-white rounded-full mr-4">
               <i className="fas fa-list text-xl"></i>
             </div>
             <div>
@@ -258,7 +258,7 @@ const Dashboard: React.FC = () => {
               visible: { opacity: 1, y: 0 },
             }}
           >
-            <div className="w-12 h-12 flex items-center justify-center bg-green-700 rounded-full mr-4">
+            <div className="w-12 h-12 flex items-center justify-center bg-purple-600 text-white rounded-full mr-4">
               <i className="fas fa-check text-xl"></i>
             </div>
             <div>
@@ -330,7 +330,7 @@ const Dashboard: React.FC = () => {
                     habit.lastCompleted ===
                     new Date().toISOString().split("T")[0]
                       ? "bg-gray-600 cursor-not-allowed"
-                      : "bg-green-600 hover:bg-green-700"
+                      : "bg-green-500 hover:bg-green-600"
                   }`}
                   disabled={
                     habit.lastCompleted ===

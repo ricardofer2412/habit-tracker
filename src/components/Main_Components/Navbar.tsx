@@ -57,15 +57,6 @@ const Navbar: React.FC = () => {
             </Link>
 
             {/* Dark Mode Toggle */}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={toggleDarkMode}
-              className="text-2xl hover:text-gray-300 dark:hover:text-gray-500 transition"
-              aria-label="Toggle Dark Mode"
-            >
-              {isDarkMode ? <FiSun /> : <FiMoon />}
-            </motion.button>
           </div>
 
           {/* Hamburger Icon (Visible on Mobile) */}
@@ -127,7 +118,7 @@ const Navbar: React.FC = () => {
           </motion.div>
 
           {/* Dark Mode Toggle */}
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
@@ -149,7 +140,7 @@ const Navbar: React.FC = () => {
                 </>
               )}
             </button>
-          </motion.div>
+          </motion.div> */}
         </div>
       </motion.div>
     </>

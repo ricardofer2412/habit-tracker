@@ -9,7 +9,7 @@ import featureImage3 from "../../imgs/feature3.png";
 const LandingPage: React.FC = () => {
   return (
     <motion.div
-      className="bg-dark-bg text-dark-text min-h-screen"
+      className="bg-dark-bg text-dark-text min-h-screen flex flex-col"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
@@ -69,7 +69,7 @@ const LandingPage: React.FC = () => {
           >
             <Link
               to="/dashboard"
-              className="px-6 py-3 bg-green-600 text-dark-bg font-semibold rounded-lg hover:bg-green-700 transition"
+              className="px-6 py-3 bg-gradient-to-r from-green-600 to-purple-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-transform duration-300"
             >
               Try a Demo 🚀
             </Link>
@@ -157,7 +157,7 @@ const LandingPage: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="py-12 text-center bg-green-700 text-dark-bg"
+        className="py-12 text-center bg-gradient-to-r from-green-600 to-purple-600 text-white"
       >
         <h3 className="text-3xl font-bold mb-4">Start Your Journey Today 🚀</h3>
         <p className="text-lg mb-6">
@@ -170,7 +170,7 @@ const LandingPage: React.FC = () => {
         >
           <Link
             to="/dashboard"
-            className="px-6 py-3 bg-dark-bg text-green-700 font-semibold rounded-lg hover:bg-dark-card transition"
+            className="px-6 py-3 bg-dark-card text-white font-semibold rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300"
           >
             Get Started
           </Link>

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const AddHabit: React.FC = () => {
   const navigate = useNavigate();
-
   const [name, setName] = useState("");
   const [frequency, setFrequency] = useState<"daily" | "weekly">("daily");
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleAddHabit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,18 +20,50 @@ const AddHabit: React.FC = () => {
 
     const storedHabits = JSON.parse(localStorage.getItem("habits") || "[]");
     localStorage.setItem("habits", JSON.stringify([...storedHabits, newHabit]));
-    alert("Habit added successfully!");
-    navigate("/dashboard");
+
+    // Show the popup
+    setShowPopup(true);
+    setTimeout(() => {
+      setShowPopup(false);
+      navigate("/dashboard");
+    }, 3000);
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-dark-bg text-gray-800 dark:text-dark-text">
-      <h1 className="text-2xl font-bold mb-5 text-gray-800 dark:text-dark-text p-4">
-        Add a New Habit
-      </h1>
+    <motion.div
+      className="min-h-screen bg-dark-bg text-dark-text flex flex-col items-center justify-center"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* Popup Notification */}
+      <AnimatePresence>
+        {showPopup && (
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            className="fixed top-10 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50"
+          >
+            🌟 New Habit Added! Keep building those streaks! 🎯
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Form Title */}
+      <motion.h1
+        className="text-3xl font-bold mb-8"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        ✨ Add a New Habit ✨
+      </motion.h1>
+
+      {/* Form */}
       <motion.form
         onSubmit={handleAddHabit}
-        className="space-y-4 mx-4"
+        className="w-full max-w-md bg-dark-card p-6 rounded-lg shadow-lg"
         initial="hidden"
         animate="visible"
         variants={{
@@ -39,20 +71,34 @@ const AddHabit: React.FC = () => {
           visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
         }}
       >
-        <div>
+        <div className="mb-4">
+          <label
+            htmlFor="name"
+            className="block text-lg font-semibold mb-2 text-gray-300"
+          >
+            Habit Name 📝
+          </label>
           <input
+            id="name"
             type="text"
-            placeholder="Habit Name"
+            placeholder="e.g., Morning Walk"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg bg-gray-100 dark:bg-dark-card dark:border-gray-600 dark:text-dark-text focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full p-3 border border-gray-600 rounded-lg bg-dark-bg text-dark-text focus:ring-2 focus:ring-green-500 outline-none"
           />
         </div>
-        <div>
+        <div className="mb-6">
+          <label
+            htmlFor="frequency"
+            className="block text-lg font-semibold mb-2 text-gray-300"
+          >
+            Frequency 🔁
+          </label>
           <select
+            id="frequency"
             value={frequency}
             onChange={(e) => setFrequency(e.target.value as "daily" | "weekly")}
-            className="w-full p-3 border border-gray-300 rounded-lg bg-gray-100 dark:bg-dark-card dark:border-gray-600 dark:text-dark-text focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full p-3 border border-gray-600 rounded-lg bg-dark-bg text-dark-text focus:ring-2 focus:ring-purple-600 outline-none"
           >
             <option value="daily">Daily</option>
             <option value="weekly">Weekly</option>
@@ -60,14 +106,14 @@ const AddHabit: React.FC = () => {
         </div>
         <motion.button
           type="submit"
-          className="w-full bg-green-500 dark:bg-green-700 text-white py-2 rounded-lg hover:bg-green-600 dark:hover:bg-green-800 transition"
-          whileHover={{ scale: 1.05 }}
+          className="w-full bg-gradient-to-r from-green-500 to-purple-600 text-white py-3 rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 hover:shadow-xl"
+          whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
         >
-          Add Habit
+          Add Habit 🚀
         </motion.button>
       </motion.form>
-    </div>
+    </motion.div>
   );
 };
 
