@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 
-function App() {
+import Navbar from "./components/Main_Components/Navbar";
+import AddHabit from "./components/Main_Components/AddHabbit";
+import Dashboard from "./components/Main_Components/Dashboard";
+import Login from "./components/Auth_Components/Login";
+import ProtectedRoute from "./components/Auth_Components/ProtectedRoute";
+import SignUp from "./components/Auth_Components/SignUp";
+
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="min-h-screen bg-gray-100">
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/add-habit"
+          element={
+            <ProtectedRoute>
+              <AddHabit />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
     </div>
   );
-}
+};
 
 export default App;
