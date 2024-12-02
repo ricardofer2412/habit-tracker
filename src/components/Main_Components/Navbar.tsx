@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { FiSun, FiMoon, FiMenu, FiX } from "react-icons/fi";
+import { FiMenu, FiX } from "react-icons/fi";
 import { motion } from "framer-motion";
 
 const Navbar: React.FC = () => {
@@ -17,15 +17,6 @@ const Navbar: React.FC = () => {
       document.documentElement.classList.add("dark");
     }
   }, []);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    if (isDarkMode) {
-      document.documentElement.classList.remove("dark");
-    } else {
-      document.documentElement.classList.add("dark");
-    }
-  };
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -55,8 +46,6 @@ const Navbar: React.FC = () => {
             >
               Add Habit
             </Link>
-
-            {/* Dark Mode Toggle */}
           </div>
 
           {/* Hamburger Icon (Visible on Mobile) */}
@@ -116,31 +105,6 @@ const Navbar: React.FC = () => {
               Add Habit
             </Link>
           </motion.div>
-
-          {/* Dark Mode Toggle */}
-          {/* <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <button
-              onClick={toggleDarkMode}
-              className="text-lg hover:text-gray-300 dark:hover:text-gray-500 transition flex items-center space-x-2"
-              aria-label="Toggle Dark Mode"
-            >
-              {isDarkMode ? (
-                <>
-                  <FiSun />
-                  <span>Light Mode</span>
-                </>
-              ) : (
-                <>
-                  <FiMoon />
-                  <span>Dark Mode</span>
-                </>
-              )}
-            </button>
-          </motion.div> */}
         </div>
       </motion.div>
     </>
