@@ -7,6 +7,7 @@ import Dashboard from "./components/Main_Components/Dashboard";
 import Login from "./components/Auth_Components/Login";
 import ProtectedRoute from "./components/Auth_Components/ProtectedRoute";
 import SignUp from "./components/Auth_Components/SignUp";
+import EditHabit from "./components/Main_Components/EditHabit";
 
 const App: React.FC = () => {
   return (
@@ -18,17 +19,26 @@ const App: React.FC = () => {
 
         <Route
           path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
+          element={<Dashboard />}
+          // element={
+          //   <ProtectedRoute>
+          //     <Dashboard />
+          //   </ProtectedRoute>
+          // }
         />
         <Route
           path="/add-habit"
           element={
             <ProtectedRoute>
               <AddHabit />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/edit-habit/:id"
+          element={
+            <ProtectedRoute>
+              <EditHabit />
             </ProtectedRoute>
           }
         />

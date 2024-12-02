@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { CiMenuKebab } from "react-icons/ci";
 
 // Register Chart.js components
 ChartJS.register(
@@ -32,6 +33,8 @@ const Dashboard: React.FC = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [summary, setSummary] = useState({ total: 0, completedToday: 0 });
   const [weeklyData, setWeeklyData] = useState<{ [key: string]: number[] }>({});
+  const [dropdowns, setDropdowns] = useState<{ [key: string]: boolean }>({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedHabits = JSON.parse(localStorage.getItem("habits") || "[]");
@@ -97,13 +100,11 @@ const Dashboard: React.FC = () => {
     setWeeklyData(calculateWeeklyProgress(updatedHabits));
   };
 
-  const deleteHabit = (id: string) => {
-    const updatedHabits = habits.filter((habit) => habit.id !== id);
-
-    setHabits(updatedHabits);
-    localStorage.setItem("habits", JSON.stringify(updatedHabits));
-    setSummary(calculateSummary(updatedHabits));
-    setWeeklyData(calculateWeeklyProgress(updatedHabits));
+  const toggleDropdown = (id: string) => {
+    setDropdowns((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id],
+    }));
   };
 
   const chartLabels = Array(7)
@@ -213,13 +214,29 @@ const Dashboard: React.FC = () => {
           {habits.map((habit) => (
             <div
               key={habit.id}
-              className="bg-white dark:bg-dark-card p-6 rounded-lg shadow-md"
+              className="bg-white dark:bg-dark-card p-6 rounded-lg shadow-md relative"
             >
               <h2 className="text-xl font-semibold mb-2">{habit.name}</h2>
               <p className="text-gray-600 dark:text-gray-400">
                 Streak: {habit.streak} days
               </p>
-              <div className="mt-4 flex justify-between">
+              <div className="absolute top-4 right-4">
+                <CiMenuKebab
+                  className="text-2xl cursor-pointer hover:text-gray-700 dark:hover:text-gray-300"
+                  onClick={() => toggleDropdown(habit.id)}
+                />
+                {dropdowns[habit.id] && (
+                  <div className="absolute right-0 mt-2 w-32 bg-white dark:bg-dark-card text-gray-800 dark:text-gray-200 rounded-lg shadow-md">
+                    <button
+                      onClick={() => navigate(`/edit-habit/${habit.id}`)}
+                      className="block px-4 py-2 text-left w-full hover:bg-gray-100 dark:hover:bg-gray-700 rounded-t-lg"
+                    >
+                      Manage
+                    </button>
+                  </div>
+                )}
+              </div>
+              <div className="mt-4">
                 <button
                   onClick={() => markAsCompleted(habit.id)}
                   className={`px-4 py-2 rounded-lg font-semibold text-white ${
@@ -237,12 +254,6 @@ const Dashboard: React.FC = () => {
                   new Date().toISOString().split("T")[0]
                     ? "Completed Today"
                     : "Mark as Completed"}
-                </button>
-                <button
-                  onClick={() => deleteHabit(habit.id)}
-                  className="px-4 py-2 rounded-lg font-semibold text-white bg-red-500 hover:bg-red-600"
-                >
-                  Delete
                 </button>
               </div>
             </div>
