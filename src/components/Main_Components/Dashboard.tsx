@@ -180,7 +180,7 @@ const Dashboard: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="bg-dark-bg text-dark-text min-h-screen pt-8"
+      className="bg-dark-bg text-dark-text min-h-screen pt-12"
     >
       {/* Confetti Effect */}
       {showConfetti && (
