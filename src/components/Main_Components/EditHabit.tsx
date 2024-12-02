@@ -37,7 +37,7 @@ const EditHabit: React.FC = () => {
 
     // Save updated habits to localStorage
     localStorage.setItem("habits", JSON.stringify(updatedHabits));
-    navigate("/"); // Redirect back to the dashboard
+    navigate("/dashboard"); // Redirect back to the dashboard
   };
 
   const handleDelete = () => {
@@ -49,7 +49,7 @@ const EditHabit: React.FC = () => {
 
     // Save updated habits to localStorage
     localStorage.setItem("habits", JSON.stringify(updatedHabits));
-    navigate("/"); // Redirect to the dashboard after deletion
+    navigate("/dashboard"); // Redirect to the dashboard after deletion
   };
 
   return (

@@ -27,3 +27,7 @@ body {
   overscroll-behavior: none; /* Prevent overscroll effects */
   background-color: #f3f4f6; /* Match your main background color */
 }
+
+body {
+  @apply font-sans;
+}

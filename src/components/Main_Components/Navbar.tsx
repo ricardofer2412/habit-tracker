@@ -38,7 +38,7 @@ const Navbar: React.FC = () => {
         <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
           {/* Logo */}
           <Link to="/" className="text-2xl font-bold hover:text-blue-200">
-            ChronosHabits
+            ChronoHabits
           </Link>
 
           {/* Links (Hidden on Mobile) */}

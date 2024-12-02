@@ -11,7 +11,8 @@ import {
   Legend,
 } from "chart.js";
 import { CiMenuKebab } from "react-icons/ci";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import Confetti from "react-confetti";
 
 // Register Chart.js components
 ChartJS.register(
@@ -35,6 +36,8 @@ const Dashboard: React.FC = () => {
   const [summary, setSummary] = useState({ total: 0, completedToday: 0 });
   const [weeklyData, setWeeklyData] = useState<{ [key: string]: number[] }>({});
   const [dropdowns, setDropdowns] = useState<{ [key: string]: boolean }>({});
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [dopamineMessage, setDopamineMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -99,6 +102,14 @@ const Dashboard: React.FC = () => {
     localStorage.setItem("habits", JSON.stringify(updatedHabits));
     setSummary(calculateSummary(updatedHabits));
     setWeeklyData(calculateWeeklyProgress(updatedHabits));
+
+    // Trigger confetti and dopamine message
+    setShowConfetti(true);
+    setDopamineMessage("🎉 Great job! You’ve just boosted your streak!");
+    setTimeout(() => {
+      setShowConfetti(false);
+      setDopamineMessage(null);
+    }, 3000);
   };
 
   const toggleDropdown = (id: string) => {
@@ -134,20 +145,20 @@ const Dashboard: React.FC = () => {
         display: true,
         position: "top" as const,
         labels: {
-          color: "#d1d5db", // Dark mode text color
+          color: "#e4e4e7", // Dark mode text color
         },
       },
       title: {
         display: true,
         text: "Weekly Habit Progress",
-        color: "#d1d5db", // Dark mode text color
+        color: "#e4e4e7", // Dark mode text color
       },
     },
     scales: {
       y: {
         beginAtZero: true,
         ticks: {
-          color: "#d1d5db", // Dark mode text color
+          color: "#e4e4e7", // Dark mode text color
         },
         grid: {
           color: "#374151", // Dark grid lines
@@ -155,7 +166,7 @@ const Dashboard: React.FC = () => {
       },
       x: {
         ticks: {
-          color: "#d1d5db", // Dark mode text color
+          color: "#e4e4e7", // Dark mode text color
         },
         grid: {
           color: "#374151", // Dark grid lines
@@ -169,8 +180,28 @@ const Dashboard: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="bg-gray-100 dark:bg-dark-bg text-gray-800 dark:text-dark-text min-h-screen"
+      className="bg-dark-bg text-dark-text min-h-screen"
     >
+      {/* Confetti Effect */}
+      {showConfetti && (
+        <Confetti width={window.innerWidth} height={window.innerHeight} />
+      )}
+
+      {/* Dopamine Message */}
+      <AnimatePresence>
+        {dopamineMessage && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-10 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50"
+          >
+            {dopamineMessage}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="max-w-6xl mx-auto px-6 py-10">
         {/* Header Section */}
         <motion.div
@@ -181,13 +212,11 @@ const Dashboard: React.FC = () => {
         >
           <div className="space-y-2 text-center md:text-left">
             <h1 className="text-4xl font-bold">Your Habits</h1>
-            <p className="text-gray-600 dark:text-gray-400">
-              Track your progress and stay consistent with your daily goals.
-            </p>
+            <p className="text-gray-400">Track your progress consistently.</p>
           </div>
           <Link
             to="/add-habit"
-            className="bg-blue-600 dark:bg-dark-card text-white dark:text-gray-200 py-2 px-6 mt-3 rounded-lg shadow hover:bg-blue-700 dark:hover:bg-gray-700 transition"
+            className="bg-gradient-to-r mt-4 from-green-500 to-purple-600 text-white py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 hover:shadow-xl"
           >
             Add New Habit
           </Link>
@@ -208,13 +237,13 @@ const Dashboard: React.FC = () => {
           }}
         >
           <motion.div
-            className="bg-white dark:bg-dark-card p-6 rounded-lg shadow-md flex items-center"
+            className="bg-dark-card p-6 rounded-lg shadow-md flex items-center"
             variants={{
               hidden: { opacity: 0, y: 20 },
               visible: { opacity: 1, y: 0 },
             }}
           >
-            <div className="w-12 h-12 flex items-center justify-center bg-blue-100 dark:bg-gray-700 text-blue-600 rounded-full mr-4">
+            <div className="w-12 h-12 flex items-center justify-center bg-blue-700 rounded-full mr-4">
               <i className="fas fa-list text-xl"></i>
             </div>
             <div>
@@ -223,13 +252,13 @@ const Dashboard: React.FC = () => {
             </div>
           </motion.div>
           <motion.div
-            className="bg-white dark:bg-dark-card p-6 rounded-lg shadow-md flex items-center"
+            className="bg-dark-card p-6 rounded-lg shadow-md flex items-center"
             variants={{
               hidden: { opacity: 0, y: 20 },
               visible: { opacity: 1, y: 0 },
             }}
           >
-            <div className="w-12 h-12 flex items-center justify-center bg-green-100 dark:bg-gray-700 text-green-600 rounded-full mr-4">
+            <div className="w-12 h-12 flex items-center justify-center bg-green-700 rounded-full mr-4">
               <i className="fas fa-check text-xl"></i>
             </div>
             <div>
@@ -244,7 +273,7 @@ const Dashboard: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="bg-white dark:bg-dark-card p-6 rounded-lg shadow-md mb-8"
+          className="bg-dark-card p-6 rounded-lg shadow-md mb-8"
         >
           <Bar data={chartData} options={chartOptions} />
         </motion.div>
@@ -266,30 +295,28 @@ const Dashboard: React.FC = () => {
           {habits.map((habit) => (
             <motion.div
               key={habit.id}
-              className="bg-white dark:bg-dark-card p-6 rounded-lg shadow-md relative"
+              className="bg-dark-card p-6 rounded-lg shadow-md relative"
               variants={{
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0 },
               }}
             >
               <h2 className="text-xl font-semibold mb-2">{habit.name}</h2>
-              <p className="text-gray-600 dark:text-gray-400">
-                Streak: {habit.streak} days
-              </p>
+              <p className="text-gray-400">Streak: {habit.streak} days</p>
               <div className="absolute top-4 right-4">
                 <CiMenuKebab
-                  className="text-2xl cursor-pointer hover:text-gray-700 dark:hover:text-gray-300"
+                  className="text-2xl cursor-pointer hover:text-gray-200"
                   onClick={() => toggleDropdown(habit.id)}
                 />
                 {dropdowns[habit.id] && (
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="absolute right-0 mt-2 w-32 bg-white dark:bg-dark-card text-gray-800 dark:text-gray-200 rounded-lg shadow-md"
+                    className="absolute right-0 mt-2 w-32 bg-dark-bg text-gray-200 rounded-lg shadow-md"
                   >
                     <button
                       onClick={() => navigate(`/edit-habit/${habit.id}`)}
-                      className="block px-4 py-2 text-left w-full hover:bg-gray-100 dark:hover:bg-gray-700 rounded-t-lg"
+                      className="block px-4 py-2 text-left w-full hover:bg-gray-700 rounded-t-lg"
                     >
                       Manage
                     </button>
@@ -302,8 +329,8 @@ const Dashboard: React.FC = () => {
                   className={`px-4 py-2 rounded-lg font-semibold text-white ${
                     habit.lastCompleted ===
                     new Date().toISOString().split("T")[0]
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-green-500 hover:bg-green-600"
+                      ? "bg-gray-600 cursor-not-allowed"
+                      : "bg-green-600 hover:bg-green-700"
                   }`}
                   disabled={
                     habit.lastCompleted ===

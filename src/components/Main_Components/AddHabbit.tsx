@@ -21,7 +21,7 @@ const AddHabit: React.FC = () => {
     const storedHabits = JSON.parse(localStorage.getItem("habits") || "[]");
     localStorage.setItem("habits", JSON.stringify([...storedHabits, newHabit]));
     alert("Habit added successfully!");
-    navigate("/");
+    navigate("/dashboard");
   };
 
   return (
