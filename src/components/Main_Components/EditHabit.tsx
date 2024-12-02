@@ -54,11 +54,11 @@ const EditHabit: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-dark-bg text-gray-800 dark:text-dark-text">
-      <div className="max-w-2xl mx-auto p-6 bg-white dark:bg-dark-card rounded-lg shadow-md">
-        <h1 className="text-3xl font-bold mb-6">Edit Habit</h1>
+      <h1 className="text-3xl font-bold  p-4">Edit Habit</h1>
+      <div className="max-w-2xl mx-auto p-6 bg-white dark:bg-dark-card rounded-lg shadow-md pt-6 m-4">
         {habit ? (
           <>
-            <div className="mb-4">
+            <div className="mb-4 pt-2">
               <label
                 htmlFor="name"
                 className="block text-lg font-medium mb-2 text-gray-700 dark:text-gray-300"

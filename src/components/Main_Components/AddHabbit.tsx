@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const AddHabit: React.FC = () => {
   const navigate = useNavigate();
@@ -24,31 +25,48 @@ const AddHabit: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <h1 className="text-xl font-bold mb-5">Add a New Habit</h1>
-      <form onSubmit={handleAddHabit} className="space-y-4">
-        <input
-          type="text"
-          placeholder="Habit Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full p-2 border rounded"
-        />
-        <select
-          value={frequency}
-          onChange={(e) => setFrequency(e.target.value as "daily" | "weekly")}
-          className="w-full p-2 border rounded"
-        >
-          <option value="daily">Daily</option>
-          <option value="weekly">Weekly</option>
-        </select>
-        <button
+    <div className="min-h-screen bg-gray-100 dark:bg-dark-bg text-gray-800 dark:text-dark-text">
+      <h1 className="text-2xl font-bold mb-5 text-gray-800 dark:text-dark-text p-4">
+        Add a New Habit
+      </h1>
+      <motion.form
+        onSubmit={handleAddHabit}
+        className="space-y-4 mx-4"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0, scale: 0.9 },
+          visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
+        }}
+      >
+        <div>
+          <input
+            type="text"
+            placeholder="Habit Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-lg bg-gray-100 dark:bg-dark-card dark:border-gray-600 dark:text-dark-text focus:ring-2 focus:ring-blue-500 outline-none"
+          />
+        </div>
+        <div>
+          <select
+            value={frequency}
+            onChange={(e) => setFrequency(e.target.value as "daily" | "weekly")}
+            className="w-full p-3 border border-gray-300 rounded-lg bg-gray-100 dark:bg-dark-card dark:border-gray-600 dark:text-dark-text focus:ring-2 focus:ring-blue-500 outline-none"
+          >
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+          </select>
+        </div>
+        <motion.button
           type="submit"
-          className="w-full bg-green-500 text-white py-2 rounded"
+          className="w-full bg-green-500 dark:bg-green-700 text-white py-2 rounded-lg hover:bg-green-600 dark:hover:bg-green-800 transition"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           Add Habit
-        </button>
-      </form>
+        </motion.button>
+      </motion.form>
     </div>
   );
 };
