@@ -31,7 +31,7 @@ const AddHabit: React.FC = () => {
 
   return (
     <motion.div
-      className="min-h-screen bg-dark-bg text-dark-text flex flex-col items-center justify-center"
+      className="h-screen bg-dark-bg text-dark-text flex flex-col items-center justify-center pt-16"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -50,16 +50,6 @@ const AddHabit: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* Form Title */}
-      <motion.h1
-        className="text-3xl font-bold mb-8"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        ✨ Add a New Habit ✨
-      </motion.h1>
-
       {/* Form */}
       <motion.form
         onSubmit={handleAddHabit}
@@ -71,6 +61,14 @@ const AddHabit: React.FC = () => {
           visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
         }}
       >
+        <motion.h1
+          className="text-3xl font-bold mb-8 text-center"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          ✨ Add a New Habit ✨
+        </motion.h1>
         <div className="mb-4">
           <label
             htmlFor="name"

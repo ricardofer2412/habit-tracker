@@ -1,20 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 import { motion } from "framer-motion";
 
 const Navbar: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  useEffect(() => {
-    // Apply dark mode based on user's preference on initial load
-    const prefersDarkMode = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-    if (prefersDarkMode) {
-      document.documentElement.classList.add("dark");
-    }
-  }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -23,7 +13,7 @@ const Navbar: React.FC = () => {
   return (
     <>
       {/* Navbar */}
-      <nav className="bg-blue-600 dark:bg-dark-card text-white dark:text-gray-200 shadow-md">
+      <nav className="fixed top-0 left-0 w-full bg-blue-600 dark:bg-dark-card text-white dark:text-gray-200 shadow-md z-50">
         <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
           {/* Logo */}
           <Link to="/" className="text-2xl font-bold hover:text-blue-200">
@@ -77,32 +67,20 @@ const Navbar: React.FC = () => {
           </motion.button>
 
           {/* Sidebar Links */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+          <Link
+            to="/"
+            onClick={toggleSidebar}
+            className="text-lg hover:text-blue-200 dark:hover:text-gray-400"
           >
-            <Link
-              to="/"
-              onClick={toggleSidebar}
-              className="text-lg hover:text-blue-200 dark:hover:text-gray-400"
-            >
-              Dashboard
-            </Link>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            Dashboard
+          </Link>
+          <Link
+            to="/add-habit"
+            onClick={toggleSidebar}
+            className="text-lg hover:text-blue-200 dark:hover:text-gray-400"
           >
-            <Link
-              to="/add-habit"
-              onClick={toggleSidebar}
-              className="text-lg hover:text-blue-200 dark:hover:text-gray-400"
-            >
-              Add Habit
-            </Link>
-          </motion.div>
+            Add Habit
+          </Link>
         </div>
       </motion.div>
     </>
